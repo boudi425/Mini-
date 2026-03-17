@@ -1,6 +1,10 @@
-import { redisClient } from '../config/redis.js';
+import { redisClient, redisState } from '../config/redis.js';
 
 const safe = async (operation) => {
+  if (!redisState.connected || !redisState.enabled) {
+    return null;
+  }
+
   try {
     return await operation();
   } catch {
